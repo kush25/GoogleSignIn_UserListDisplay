@@ -1,4 +1,4 @@
-package com.hcl.googlesigninapp_miniapp;
+package com.hcl.googlesigninapp_miniapp.userdetails;
 
 
 import android.content.Context;
@@ -12,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.hcl.googlesigninapp_miniapp.R;
 
 import java.util.ArrayList;
@@ -23,6 +21,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context ctx;
     private ArrayList<User> mUserList;
     private int[] images;
+
+    private OnItemClickListener mlistener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnClickListener(OnItemClickListener listener) {
+        mlistener = listener;
+    }
+
+
 
     public UserAdapter(Context ctx, ArrayList<User> mUserList, int[] images) {
         this.ctx = ctx;
@@ -73,13 +82,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             txtname = itemView.findViewById(R.id.text_name);
             txtusername = itemView.findViewById(R.id.text_username);
             txtemail = itemView.findViewById(R.id.text_email);
-
-
-
-
             img_android = itemView.findViewById(R.id.image_user);
 
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mlistener !=null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mlistener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
 
         }

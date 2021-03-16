@@ -1,6 +1,5 @@
 package com.hcl.googlesigninapp_miniapp;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.hcl.googlesigninapp_miniapp.userdetails.UserActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,11 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
 
         // Result obtained from the launch of Intent from GoogleSignInClient
         if (requestCode == RC_SIGN_IN) {
@@ -83,13 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
 
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-
 
             if (acct != null) {
                 String personName = acct.getDisplayName();
@@ -101,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             startActivity(new Intent(MainActivity.this,UserActivity.class));
-
 
 
         } catch (ApiException e) {

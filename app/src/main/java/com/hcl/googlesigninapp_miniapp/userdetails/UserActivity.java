@@ -1,8 +1,10 @@
-package com.hcl.googlesigninapp_miniapp;
+package com.hcl.googlesigninapp_miniapp.userdetails;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +42,7 @@ import okhttp3.Response;
 
 
 
-    public class UserActivity extends AppCompatActivity {
+    public class UserActivity extends AppCompatActivity implements UserAdapter.OnItemClickListener {
 
 
 
@@ -48,10 +50,16 @@ import okhttp3.Response;
         private RecyclerView mRecyclerView;
         private UserAdapter userAdapter;
         private ArrayList<User> mUserList;
-        private RequestQueue mRequestQueue;
         private TextView rslt;
         private User[] users;
         GoogleSignInClient mGoogleSignInClient;
+
+        public static final String EXTRA_IMG = "image";
+        public static final String EXTRA_NAME = "name";
+        public static final String EXTRA_USERNAME = "username";
+        public static final String EXTRA_EMAIL = "email";
+        public static final String EXTRA_PHONE = "phone";
+
 
         int[] users_img_url  =
                 {
@@ -80,9 +88,6 @@ import okhttp3.Response;
             rslt = findViewById(R.id.rslt);
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            TextView txtmyname= (TextView) findViewById(R.id.text_name);
-            TextView txtmyemail = (TextView) findViewById(R.id.text_username);
-            ImageView myimage = (ImageView) findViewById(R.id.image_user);
 
             Button sgnout = (Button) findViewById(R.id.signout_btns);
 
@@ -108,6 +113,11 @@ import okhttp3.Response;
 
               String personEmail = acct.getEmail();
                 Uri personPhoto = acct.getPhotoUrl();
+
+                TextView txtmyname= (TextView) findViewById(R.id.text_name);
+                TextView txtmyemail = (TextView) findViewById(R.id.text_username);
+                ImageView myimage = (ImageView) findViewById(R.id.image_user);
+
 
                 txtmyname.setText(personName);
                 txtmyemail.setText(personEmail);
@@ -157,8 +167,6 @@ import okhttp3.Response;
 
                         final String myResponse = response.body().string();
 
-
-
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -173,6 +181,7 @@ import okhttp3.Response;
 
                                 userAdapter = new UserAdapter(UserActivity.this,mUserList,users_img_url);
                                 mRecyclerView.setAdapter(userAdapter);
+                               userAdapter.setOnClickListener(UserActivity.this::onItemClick);
                             }
                         });
                     }
@@ -181,5 +190,17 @@ import okhttp3.Response;
 
         }
 
+        @Override
+        public void onItemClick(int position) {
+            Intent userdts = new Intent(UserActivity.this,UserDetailsActivity.class);
+            User clickedDetails = mUserList.get(position);
+            userdts.putExtra(EXTRA_NAME,clickedDetails.getName());
+            userdts.putExtra(EXTRA_USERNAME,clickedDetails.getUsername());
+            userdts.putExtra(EXTRA_EMAIL,clickedDetails.getEmail());
+            userdts.putExtra(EXTRA_PHONE,clickedDetails.getPhone());
+            startActivity(userdts);
+
+
+        }
     }
 
