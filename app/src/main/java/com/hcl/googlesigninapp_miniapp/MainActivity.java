@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null){
-            Intent mainIntent = new Intent(MainActivity.this, SignOutActivity.class);
+            Intent mainIntent = new Intent(MainActivity.this, UserActivity.class);
             startActivity(mainIntent);
         }
     }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
             }
 
-            startActivity(new Intent(MainActivity.this,SignOutActivity.class));
+            startActivity(new Intent(MainActivity.this,UserActivity.class));
 
 
 
