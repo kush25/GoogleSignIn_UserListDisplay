@@ -1,14 +1,19 @@
 package com.hcl.googlesigninapp_miniapp.userdetails;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hcl.googlesigninapp_miniapp.R;
 
 import org.w3c.dom.Text;
+
 
 import static com.hcl.googlesigninapp_miniapp.userdetails.UserActivity.EXTRA_NAME;
 import static com.hcl.googlesigninapp_miniapp.userdetails.UserActivity.EXTRA_USERNAME;
@@ -17,6 +22,9 @@ import static com.hcl.googlesigninapp_miniapp.userdetails.UserActivity.EXTRA_EMA
 import static com.hcl.googlesigninapp_miniapp.userdetails.UserActivity.EXTRA_PHONE;
 
 public class UserDetailsActivity extends AppCompatActivity {
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +43,14 @@ public class UserDetailsActivity extends AppCompatActivity {
         TextView eml = (TextView) findViewById(R.id.text_view_email_detail);
         TextView phns = (TextView) findViewById(R.id.text_view_phone_detail);
 
+
         nm.setText(name);
         unm.setText(username);
         eml.setText(email);
         phns.setText(phone);
 
-
     }
+
+
+
 }

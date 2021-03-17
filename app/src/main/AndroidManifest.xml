@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GoogleSignInApp_MiniApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".userdetails.UserDetailsActivity"></activity>
+        <activity android:name=".userdetails.Mydtls"></activity>
+        <activity android:name=".userdetails.UserDetailsActivity" />
         <activity android:name=".userdetails.UserActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

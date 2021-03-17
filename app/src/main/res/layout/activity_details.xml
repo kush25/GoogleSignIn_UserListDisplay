@@ -15,9 +15,11 @@
        android:layout_height="wrap_content"
        android:layout_marginTop="50dp"
        app:cardCornerRadius="15dp"
+       app:tooltipTextCompat="@string/add_for_all_tooltip"
        android:padding="10dp"
        android:layout_marginLeft="5dp"
        android:layout_marginRight="5dp">
+
 
       <TextView
           android:layout_width="wrap_content"
@@ -42,6 +44,7 @@
              android:id="@+id/image_user"
              android:layout_width="100dp"
              android:layout_height="80dp"
+             android:tooltipText="Please Click on your Image to edit details"
              android:layout_marginTop="11dp"
              android:src="@mipmap/ic_launcher" />
 
@@ -50,6 +53,7 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_alignParentTop="true"
+             android:tooltipText="Please Click on your Image to edit details"
              android:layout_marginTop="19dp"
              android:layout_toEndOf="@+id/image_user"
              android:text="Name:"
@@ -60,12 +64,15 @@
              android:id="@+id/text_username"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
+             android:tooltipText="Please Click on your Image to edit details"
              android:layout_below="@+id/text_name"
              android:layout_marginStart="-3dp"
              android:layout_marginTop="10dp"
              android:layout_toEndOf="@+id/image_user"
              android:text="Email:"
              android:textSize="20sp" />
+
+
 
       </RelativeLayout>
 
@@ -90,10 +97,10 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:layout_alignParentEnd="true"
-
        android:layout_marginEnd="10dp"
        android:text="Sign Out"
        app:layout_constraintVertical_bias="0.499" />
+
 
 
 </RelativeLayout>

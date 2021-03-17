@@ -22,6 +22,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private ArrayList<User> mUserList;
     private int[] images;
 
+
     private OnItemClickListener mlistener;
 
     public interface OnItemClickListener {
@@ -51,14 +52,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         User currentList =mUserList.get(position);
 
         String name = currentList.getName();
-        String username = currentList.getUsername();
-        String email = currentList.getEmail();
 
 
         holder.img_android.setImageResource(images[position]);
         holder.txtname.setText(name);
-        holder.txtusername.setText(username);
-        holder.txtemail.setText(email);
+
 
 
     }
@@ -70,9 +68,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView txtname;
-        public TextView txtusername;
-        public TextView txtemail;
-
 
         public ImageView img_android;
 
@@ -80,9 +75,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             super(itemView);
 
             txtname = itemView.findViewById(R.id.text_name);
-            txtusername = itemView.findViewById(R.id.text_username);
-            txtemail = itemView.findViewById(R.id.text_email);
+
             img_android = itemView.findViewById(R.id.image_user);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

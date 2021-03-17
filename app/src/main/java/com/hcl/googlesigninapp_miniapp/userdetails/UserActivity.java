@@ -3,6 +3,7 @@ package com.hcl.googlesigninapp_miniapp.userdetails;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.hcl.googlesigninapp_miniapp.R;
+import com.skydoves.balloon.Balloon;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -106,27 +109,7 @@ import okhttp3.Response;
                 }
             });
 
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
-
-            if (acct != null) {
-              String personName = acct.getDisplayName();
-
-              String personEmail = acct.getEmail();
-                Uri personPhoto = acct.getPhotoUrl();
-
-                TextView txtmyname= (TextView) findViewById(R.id.text_name);
-                TextView txtmyemail = (TextView) findViewById(R.id.text_username);
-                ImageView myimage = (ImageView) findViewById(R.id.image_user);
-
-
-                txtmyname.setText(personName);
-                txtmyemail.setText(personEmail);
-                Glide.with(this).load(String.valueOf(personPhoto)).into(myimage);
-
-
-
-            }
-
+            MyDetails();
             parseJSON();
         }
 
@@ -142,6 +125,42 @@ import okhttp3.Response;
                     });
         }
 
+
+
+        public void MyDetails(){
+
+
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
+
+            if (acct != null) {
+                String personName = acct.getDisplayName();
+
+                String personEmail = acct.getEmail();
+                Uri personPhoto = acct.getPhotoUrl();
+
+                TextView txtmyname= (TextView) findViewById(R.id.text_name);
+                TextView txtmyemail = (TextView) findViewById(R.id.text_username);
+                ImageView myimage = (ImageView) findViewById(R.id.image_user);
+
+
+                txtmyname.setText(personName);
+                txtmyemail.setText(personEmail);
+                Glide.with(this).load(String.valueOf(personPhoto)).into(myimage);
+
+
+
+
+                //click on the image to update or edit your personal details
+                myimage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent mydts = new Intent(UserActivity.this,Mydtls.class);
+                        startActivity(mydts);
+                    }
+                });
+
+            }
+        }
         public void parseJSON(){
 
             Request request = new Request.Builder().url("http://jsonplaceholder.typicode.com/users")
@@ -176,18 +195,15 @@ import okhttp3.Response;
                                     mUserList.add(u);
                                     Log.i("USER", u.toString());
 
-
                                 }
-
+                               // userAdapter = new UserAdapter(UserActivity.this,mUserList);
                                 userAdapter = new UserAdapter(UserActivity.this,mUserList,users_img_url);
                                 mRecyclerView.setAdapter(userAdapter);
                                userAdapter.setOnClickListener(UserActivity.this::onItemClick);
                             }
                         });
-                    }
-                }
+                    } }
             });
-
         }
 
         @Override
@@ -198,9 +214,10 @@ import okhttp3.Response;
             userdts.putExtra(EXTRA_USERNAME,clickedDetails.getUsername());
             userdts.putExtra(EXTRA_EMAIL,clickedDetails.getEmail());
             userdts.putExtra(EXTRA_PHONE,clickedDetails.getPhone());
+            userdts.putExtra(EXTRA_IMG,clickedDetails.getUsers_img_url());
             startActivity(userdts);
 
-
         }
+
     }
 
