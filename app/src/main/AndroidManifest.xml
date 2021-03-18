@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".userdetails.Mydtls"></activity>
         <activity android:name=".userdetails.UserDetailsActivity" />
-        <activity android:name=".userdetails.UserActivity" />
+        <activity android:name=".userdetails.UserActivity" android:launchMode="singleTop" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

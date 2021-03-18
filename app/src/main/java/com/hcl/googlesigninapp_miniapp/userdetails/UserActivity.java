@@ -1,7 +1,9 @@
 package com.hcl.googlesigninapp_miniapp.userdetails;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +50,7 @@ import okhttp3.Response;
 
     public class UserActivity extends AppCompatActivity implements UserAdapter.OnItemClickListener {
 
-
+        SharedPreferences sharedPreferences;
 
         private final OkHttpClient client = new OkHttpClient();
         private RecyclerView mRecyclerView;
@@ -62,6 +65,12 @@ import okhttp3.Response;
         public static final String EXTRA_USERNAME = "username";
         public static final String EXTRA_EMAIL = "email";
         public static final String EXTRA_PHONE = "phone";
+
+        public static final String NAME = "name";
+        public static final String EMAIL = "email";
+        public static final String  GIVENNAME = "givenname";
+        public static final String  FAMILYNAME = "familyname";
+        public static final String IMAGE = "image";
 
 
         int[] users_img_url  =
@@ -92,6 +101,7 @@ import okhttp3.Response;
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
             Button sgnout = (Button) findViewById(R.id.signout_btns);
 
             mUserList = new ArrayList<>();
@@ -111,6 +121,7 @@ import okhttp3.Response;
 
             MyDetails();
             parseJSON();
+
         }
 
 
@@ -129,10 +140,11 @@ import okhttp3.Response;
 
         public void MyDetails(){
 
-
+            CardView cardview = (CardView) findViewById(R.id.card_view);
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(UserActivity.this);
 
             if (acct != null) {
+
                 String personName = acct.getDisplayName();
 
                 String personEmail = acct.getEmail();
@@ -143,24 +155,37 @@ import okhttp3.Response;
                 ImageView myimage = (ImageView) findViewById(R.id.image_user);
 
 
-                txtmyname.setText(personName);
+               txtmyname.setText(personName);
                 txtmyemail.setText(personEmail);
                 Glide.with(this).load(String.valueOf(personPhoto)).into(myimage);
 
+                sharedPreferences = getSharedPreferences("myedit", Context.MODE_PRIVATE);
+                if (sharedPreferences.contains("myname")) {
 
+                    String updated = sharedPreferences.getString("myname","Done");
+                    txtmyname.setText(updated);
 
+                }
 
-                //click on the image to update or edit your personal details
-                myimage.setOnClickListener(new View.OnClickListener() {
+                cardview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent mydts = new Intent(UserActivity.this,Mydtls.class);
+
+                        mydts.putExtra(NAME,acct.getDisplayName());
+                        mydts.putExtra(GIVENNAME,acct.getGivenName());
+                        mydts.putExtra(FAMILYNAME,acct.getFamilyName());
+
                         startActivity(mydts);
                     }
                 });
 
             }
+
         }
+
+
+
         public void parseJSON(){
 
             Request request = new Request.Builder().url("http://jsonplaceholder.typicode.com/users")

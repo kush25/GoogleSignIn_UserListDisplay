@@ -3,5 +3,4 @@
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_out">Signed out</string>
     <string name="mydetails">My Profile</string>
-    <string name="add_for_all_tooltip">Click here</string>
 </resources>
