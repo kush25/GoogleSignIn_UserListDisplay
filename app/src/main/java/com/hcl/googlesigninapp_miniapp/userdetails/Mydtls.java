@@ -90,9 +90,16 @@ public class Mydtls extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        notifying = true;
         Log.i("My_TAG","on Restart is called");
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel("MY_TAG", 10);
+    }
+
 
 
 
@@ -121,7 +128,7 @@ public class Mydtls extends AppCompatActivity {
 
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify("mytag",1,  notificationbuilder.build());
+        managerCompat.notify("MY_TAG",10,  notificationbuilder.build());
 
     }
 
@@ -130,20 +137,20 @@ public class Mydtls extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         notifying=true;
+
+
+//
+            Log.i("My_TAG","on Pause is Called");
+            notifyMe();
+
     }
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//
-//        if(notifying) {
-//
-//            Log.i("My_TAG","on Stop is Called");
-//            notifyMe();
-//        }
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("My_TAG","on Stop is Called");
 
-
+    }
 
 }
 

@@ -168,7 +168,7 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
 
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        managerCompat.notify("mytag",1,  notificationbuilder.build());
+        managerCompat.notify("MY_TAG",1,  notificationbuilder.build());
 
     }
 
@@ -184,6 +184,12 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        NotificationManager nm = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel("MY_TAG", 1);
+    }
 
 
 

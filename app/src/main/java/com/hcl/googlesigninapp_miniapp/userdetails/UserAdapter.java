@@ -21,7 +21,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context ctx;
     private ArrayList<User> mUserList;
-    //private int[] images;
+
 
 
     private OnItemClickListener mlistener;
