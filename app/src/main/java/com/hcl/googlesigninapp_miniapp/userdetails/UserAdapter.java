@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bumptech.glide.Glide;
 import com.hcl.googlesigninapp_miniapp.R;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context ctx;
     private ArrayList<User> mUserList;
-    private int[] images;
+    //private int[] images;
 
 
     private OnItemClickListener mlistener;
@@ -34,11 +35,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
 
 
-    public UserAdapter(Context ctx, ArrayList<User> mUserList, int[] images) {
+    public UserAdapter(Context ctx, ArrayList<User> mUserList) {
         this.ctx = ctx;
         this.mUserList = mUserList;
-        this.images = images;
+
     }
+
+//    public UserAdapter(Context ctx, ArrayList<User> mUserList, int[] images) {
+//        this.ctx = ctx;
+//        this.mUserList = mUserList;
+//        this.images = images;
+//    }
 
     @NonNull
     @Override
@@ -53,8 +60,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         String name = currentList.getName();
 
+        ImageView images = holder.images;
+        Glide.with(images).load("https://robohash.org/kush" + String.valueOf(position)).into(images);
 
-        holder.img_android.setImageResource(images[position]);
+
+        //holder.img_android.setImageResource(images[position]);
         holder.txtname.setText(name);
 
 
@@ -69,14 +79,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView txtname;
 
-        public ImageView img_android;
+        public ImageView images;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             txtname = itemView.findViewById(R.id.text_name);
 
-            img_android = itemView.findViewById(R.id.image_user);
+            images = itemView.findViewById(R.id.image_user);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

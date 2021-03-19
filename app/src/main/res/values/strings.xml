@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GoogleSignInApp_MiniApp</string>
+    <string name="app_name">GoogleUserList</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
     <string name="signed_out">Signed out</string>
     <string name="mydetails">My Profile</string>

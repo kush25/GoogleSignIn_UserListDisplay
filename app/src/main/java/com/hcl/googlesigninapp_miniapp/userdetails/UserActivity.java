@@ -1,6 +1,10 @@
 package com.hcl.googlesigninapp_miniapp.userdetails;
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +37,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
+import com.hcl.googlesigninapp_miniapp.MainActivity;
 import com.hcl.googlesigninapp_miniapp.R;
 import com.skydoves.balloon.Balloon;
 
@@ -46,11 +53,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import static com.hcl.googlesigninapp_miniapp.userdetails.NotifyApp.CHANNEL_ID;
 
 
-    public class UserActivity extends AppCompatActivity implements UserAdapter.OnItemClickListener {
+public class UserActivity extends AppCompatActivity implements UserAdapter.OnItemClickListener {
 
         SharedPreferences sharedPreferences;
+         public static Boolean closing = true;
 
         private final OkHttpClient client = new OkHttpClient();
         private RecyclerView mRecyclerView;
@@ -59,6 +68,10 @@ import okhttp3.Response;
         private TextView rslt;
         private User[] users;
         GoogleSignInClient mGoogleSignInClient;
+
+        public static final String MY_TAG = "message";
+
+        NotificationManagerCompat notificationManager;
 
         public static final String EXTRA_IMG = "image";
         public static final String EXTRA_NAME = "name";
@@ -73,27 +86,14 @@ import okhttp3.Response;
         public static final String IMAGE = "image";
 
 
-        int[] users_img_url  =
-                {
-                        R.drawable.user1,
-                        R.drawable.user2,
-                        R.drawable.user3,
-                        R.drawable.user4,
-                        R.drawable.user5,
-                        R.drawable.user6,
-                        R.drawable.user7,
-                        R.drawable.user8,
-                        R.drawable.user9,
-                        R.drawable.user10
 
-                };
-
-
-
+    public static Boolean notifying = true;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_details);
+
+            notifying = true;
 
 
             mRecyclerView = findViewById(R.id.recycle_view);
@@ -122,7 +122,82 @@ import okhttp3.Response;
             MyDetails();
             parseJSON();
 
+            if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.O){
+                NotificationChannel channel = new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                manager.createNotificationChannel(channel);
+
+            }
+
         }
+
+//
+//        @Override
+//        protected void onRestart() {
+//            super.onRestart();
+//            closing = true;
+//        }
+
+//        @Override
+//        protected void onPause(){
+//            super.onPause();
+//            Log.i("My_TAG","On Restart Called");
+//
+//            if(closing) {
+//
+//                sendNotification();
+//            }
+//        }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        notifying = true;
+        Log.i("My_TAG","on Restart is called");
+    }
+
+
+        public void notifyMe() {
+
+
+           String title = "Rememebr Me";
+           String message ="Dont Forget to come back";
+
+            Intent activityIntent =  new Intent(this,UserActivity.class);
+            activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent contentIntent  = PendingIntent.getActivity(
+                    this,
+                    0,
+                    activityIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+            NotificationCompat.Builder notificationbuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
+            notificationbuilder.setSmallIcon(R.drawable.user1);
+            notificationbuilder.setContentTitle(title);
+            notificationbuilder.setContentText(message);
+            notificationbuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+            notificationbuilder.setContentIntent(contentIntent);
+            notificationbuilder.setAutoCancel(true);
+
+
+            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+            managerCompat.notify("mytag",1,  notificationbuilder.build());
+
+        }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if(notifying) {
+
+            Log.i("My_TAG","on Stop is Called");
+            notifyMe();
+        }
+    }
+
 
 
         private void signOut() {
@@ -130,11 +205,13 @@ import okhttp3.Response;
                     .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            notifying=false;
                             Toast.makeText(UserActivity.this,"Sign Out Success",Toast.LENGTH_LONG).show();
                             finish();
                         }
                     });
         }
+
 
 
 
@@ -177,6 +254,7 @@ import okhttp3.Response;
                         mydts.putExtra(FAMILYNAME,acct.getFamilyName());
 
                         startActivity(mydts);
+                        notifying=false;
                     }
                 });
 
@@ -221,8 +299,8 @@ import okhttp3.Response;
                                     Log.i("USER", u.toString());
 
                                 }
-                               // userAdapter = new UserAdapter(UserActivity.this,mUserList);
-                                userAdapter = new UserAdapter(UserActivity.this,mUserList,users_img_url);
+                               userAdapter = new UserAdapter(UserActivity.this,mUserList);
+                              //  userAdapter = new UserAdapter(UserActivity.this,mUserList,users_img_url);
                                 mRecyclerView.setAdapter(userAdapter);
                                userAdapter.setOnClickListener(UserActivity.this::onItemClick);
                             }
@@ -230,6 +308,8 @@ import okhttp3.Response;
                     } }
             });
         }
+
+
 
         @Override
         public void onItemClick(int position) {
@@ -241,6 +321,7 @@ import okhttp3.Response;
             userdts.putExtra(EXTRA_PHONE,clickedDetails.getPhone());
             userdts.putExtra(EXTRA_IMG,clickedDetails.getUsers_img_url());
             startActivity(userdts);
+            notifying=false;
 
         }
 
