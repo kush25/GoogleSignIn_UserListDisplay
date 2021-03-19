@@ -72,25 +72,5 @@ public class User {
     }
 
 
-    int[] users_img_url ={
-
-                    R.drawable.user1,
-                    R.drawable.user2,
-                    R.drawable.user3,
-                    R.drawable.user4,
-                    R.drawable.user5,
-                    R.drawable.user6,
-                    R.drawable.user7,
-                    R.drawable.user8,
-                    R.drawable.user9,
-                    R.drawable.user10
-
-
-    };
-
-    public int[] getUsers_img_url() {
-        return users_img_url;
-    }
-
 
 }

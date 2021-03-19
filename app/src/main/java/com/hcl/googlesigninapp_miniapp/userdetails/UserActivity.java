@@ -59,7 +59,6 @@ import static com.hcl.googlesigninapp_miniapp.userdetails.NotifyApp.CHANNEL_ID;
 public class UserActivity extends AppCompatActivity implements UserAdapter.OnItemClickListener {
 
         SharedPreferences sharedPreferences;
-         public static Boolean closing = true;
 
         private final OkHttpClient client = new OkHttpClient();
         private RecyclerView mRecyclerView;
@@ -80,14 +79,12 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
         public static final String EXTRA_PHONE = "phone";
 
         public static final String NAME = "name";
-        public static final String EMAIL = "email";
         public static final String  GIVENNAME = "givenname";
         public static final String  FAMILYNAME = "familyname";
-        public static final String IMAGE = "image";
+
+        public static Boolean notifying = true;
 
 
-
-    public static Boolean notifying = true;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -131,60 +128,49 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
 
         }
 
-//
-//        @Override
-//        protected void onRestart() {
-//            super.onRestart();
-//            closing = true;
-//        }
 
-//        @Override
-//        protected void onPause(){
-//            super.onPause();
-//            Log.i("My_TAG","On Restart Called");
-//
-//            if(closing) {
-//
-//                sendNotification();
-//            }
-//        }
+
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        notifying = true;
         Log.i("My_TAG","on Restart is called");
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MY_TAG","On Pause Called");
+    }
 
-        public void notifyMe() {
-
-
-           String title = "Rememebr Me";
-           String message ="Dont Forget to come back";
-
-            Intent activityIntent =  new Intent(this,UserActivity.class);
-            activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent contentIntent  = PendingIntent.getActivity(
-                    this,
-                    0,
-                    activityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+    public void notifyMe() {
 
 
-            NotificationCompat.Builder notificationbuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
-            notificationbuilder.setSmallIcon(R.drawable.user1);
-            notificationbuilder.setContentTitle(title);
-            notificationbuilder.setContentText(message);
-            notificationbuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
-            notificationbuilder.setContentIntent(contentIntent);
-            notificationbuilder.setAutoCancel(true);
+        String title = "Rememebr Me";
+        String message ="Dont Forget to come back";
+
+        Intent activityIntent =  new Intent(this,UserActivity.class);
+        activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent contentIntent  = PendingIntent.getActivity(
+                this,
+                0,
+                activityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
 
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-            managerCompat.notify("mytag",1,  notificationbuilder.build());
+        NotificationCompat.Builder notificationbuilder = new NotificationCompat.Builder(this,CHANNEL_ID);
+        notificationbuilder.setSmallIcon(R.drawable.user1);
+        notificationbuilder.setContentTitle(title);
+        notificationbuilder.setContentText(message);
+        notificationbuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        notificationbuilder.setContentIntent(contentIntent);
+        notificationbuilder.setAutoCancel(true);
 
-        }
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify("mytag",1,  notificationbuilder.build());
+
+    }
 
 
     @Override
@@ -197,6 +183,7 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
             notifyMe();
         }
     }
+
 
 
 
@@ -319,7 +306,6 @@ public class UserActivity extends AppCompatActivity implements UserAdapter.OnIte
             userdts.putExtra(EXTRA_USERNAME,clickedDetails.getUsername());
             userdts.putExtra(EXTRA_EMAIL,clickedDetails.getEmail());
             userdts.putExtra(EXTRA_PHONE,clickedDetails.getPhone());
-            userdts.putExtra(EXTRA_IMG,clickedDetails.getUsers_img_url());
             startActivity(userdts);
             notifying=false;
 

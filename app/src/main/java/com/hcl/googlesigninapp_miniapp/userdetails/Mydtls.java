@@ -88,12 +88,6 @@ public class Mydtls extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        notifying=false;
-    }
-
-    @Override
     protected void onRestart() {
         super.onRestart();
         notifying = true;
@@ -138,16 +132,17 @@ public class Mydtls extends AppCompatActivity {
         notifying=true;
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//
+//        if(notifying) {
+//
+//            Log.i("My_TAG","on Stop is Called");
+//            notifyMe();
+//        }
+//    }
 
-        if(notifying) {
-
-            Log.i("My_TAG","on Stop is Called");
-            notifyMe();
-        }
-    }
 
 
 }
